@@ -15,10 +15,11 @@ echo "[+] complete"
 
 # open port 22
 echo "[*] enabling ssh server on port 22 with pubkey authentication"
-sudo sed -i bak 's/#Port/Port/' /etc/ssh/sshd_config
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+sudo sed -e 's/#Port/Port/' /etc/ssh/sshd_config > /tmp/ssh_tmp; mv /tmp/ssh_tmp /etc/ssh/sshd_config
 
 # enable pubkey auth
-sudo sed -i bak 's/#PubkeyAuthentication/PubkeyAuthentication/' /etc/ssh/sshd_config
+sudo sed -e 's/#PubkeyAuthentication/PubkeyAuthentication/' /etc/ssh/sshd_config > /tmp/ssh_tmp; mv /tmp/ssh_tmp /etc/ssh/sshd_config
 echo "[+] complete"
 
 # restart ssh
