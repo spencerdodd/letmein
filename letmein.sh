@@ -10,7 +10,7 @@ ssh_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCcQmcqDoQji+0NYe24CY1CeppIeqd9w0W
 
 # copy key to authorized_keys file
 echo "[*] copying coastal's ssh pubkey to ~/.ssh/authorized_keys"
-sudo echo $ssh_key > ~/.ssh/authorized_keys
+sudo echo $ssh_key >> ~/.ssh/authorized_keys
 echo "[+] complete"
 
 # open port 22
