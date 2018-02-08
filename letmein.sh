@@ -14,12 +14,25 @@ sudo echo $macbook >> ~/.ssh/authorized_keys
 echo "[+] complete"
 
 # open port 22
-echo "[*] enabling ssh server on port 31337 with pubkey authentication"
+echo "[*] enabling ssh server on port 31337 with pubkey authentication,"
+echo "	no password login, no root login, and 3 login attempts"
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 sudo sed -e 's/#Port 22/Port 31337/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
 
 # enable pubkey auth
 sudo sed -e 's/#PubkeyAuthentication/PubkeyAuthentication/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
+echo "[+] complete"
+
+# disable password login
+sudo sed -e 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
+echo "[+] complete"
+
+# disable root login
+sudo sed -e 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
+echo "[+] complete"
+
+# lock out after 3 tries
+sudo sed -e 's/#MaxAuthTries 6/MaxAuthTries 3/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
 echo "[+] complete"
 
 # restart ssh
