@@ -35,11 +35,6 @@ sudo sed -e 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/
 echo "[*] (sshd_config) setting login attempt lockout at 3 attempts"
 sudo sed -e 's/#MaxAuthTries 6/MaxAuthTries 3/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
 
-# restart ssh
-echo "[*] restarting ssh to enable changes"
-sudo service ssh restart
-echo "[+] complete"
-
 read -p "Would you like to add 2-factor authentication? (recommended)" -n 1 -r
 	echo    # (optional) move to a new line
 	if [[ $REPLY =~ ^[Yy]$ ]]
@@ -60,6 +55,14 @@ read -p "Would you like to add 2-factor authentication? (recommended)" -n 1 -r
 		echo "[*] enabling 2-factor as an authentication option"
 		sudo sed -e 's/@include common-auth/auth required pam_google_authenticator.so/' /etc/pam.d/sshd > /tmp/pam_ssh; sudo mv /tmp/pam_ssh /etc/pam.d/sshd
 
+
+		echo "[*] generating a 2-factor auth code for login (use this to add to your authenticator)"
+		google-authenticator
 	fi
+
+# restart ssh
+echo "[*] restarting ssh to enable changes"
+sudo service ssh restart
+echo "[+] complete"
 
 echo "[+] openssh-server configured for coastal access!"
