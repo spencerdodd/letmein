@@ -44,7 +44,7 @@ read -p "Would you like to add 2-factor authentication? (recommended)" -n 1 -r
 	    sudo apt-get --force-yes --yes install libpam-google-authenticator
 
 		echo "[*] (sshd_config) enabling ChallengeResponseAuthentication"
-		sudo sed -e 's/#ChallengeResponseAuthentication/ChallengeResponseAuthentication/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
+		sudo sed -e 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
 
 		echo "[*] (sshd_config) enabling public-key and keyboard authentication mechanisms"
 		echo "AuthenticationMethods publickey,keyboard-interactive" >> /etc/ssh/sshd_config
