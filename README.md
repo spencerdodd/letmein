@@ -1,18 +1,19 @@
 # letmein
 
-script to set up newly spun up virtualbox guest OSs so I can ssh into them. It performs the following:
+script to perform automation of spinning up a hardened ssh server that
+I can access. Performs the following hardening methods:
 
-* installs openssh-server
+* enables public-key authentication
 
-* copies my pub key to `~/.ssh/authorized_keys`
+* disables password authentication
 
-* enables ssh server on port 22 with pub key auth
+* disables root login
 
-* installs `rsub` to allow for file editing natively in sublime text on my host computer
+* set MaxAuthTries to 3
 
-* restarts ssh to enable the changes
+* sets port to 31337
 
-Tested on Ubuntu 17.10 Server
+* *(optional)* enables 2-factor authentication through Google Authenticator
 
 ### usage:
 
@@ -21,3 +22,5 @@ git clone https://github.com/spencerdodd/letmein
 cd letmein
 ./letmein.sh
 ```
+
+If you want me to have 
