@@ -40,4 +40,26 @@ echo "[*] restarting ssh to enable changes"
 sudo service ssh restart
 echo "[+] complete"
 
-echo "[+] openssh-server configured for coastal access"
+read -p "Would you like to add 2-factor authentication? (recommended)" -n 1 -r
+	echo    # (optional) move to a new line
+	if [[ $REPLY =~ ^[Yy]$ ]]
+	then
+	    # lock out after 3 tries
+	    echo "[*] installing libpam-google-authenticator"
+	    sudo apt-get --force-yes --yes install libpam-google-authenticator
+
+		echo "[*] (sshd_config) enabling ChallengeResponseAuthentication"
+		sudo sed -e 's/#ChallengeResponseAuthentication/ChallengeResponseAuthentication/' /etc/ssh/sshd_config > /tmp/ssh_tmp; sudo mv /tmp/ssh_tmp /etc/ssh/sshd_config
+
+		echo "[*] (sshd_config) enabling public-key and keyboard authentication mechanisms"
+		echo "AuthenticationMethods publickey,keyboard-interactive" >> /etc/ssh/sshd_config
+
+		echo "[*] loading new configs into ssh server"
+		sudo service ssh reload
+
+		echo "[*] enabling 2-factor as an authentication option"
+		sudo sed -e 's/@include common-auth/auth required pam_google_authenticator.so/' /etc/pam.d/sshd > /tmp/pam_ssh; sudo mv /tmp/pam_ssh /etc/pam.d/sshd
+
+	fi
+
+echo "[+] openssh-server configured for coastal access!"
