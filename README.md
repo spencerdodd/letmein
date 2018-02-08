@@ -22,5 +22,3 @@ git clone https://github.com/spencerdodd/letmein
 cd letmein
 ./letmein.sh
 ```
-
-If you want me to have 
